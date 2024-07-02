@@ -1,42 +1,31 @@
 <?php
-
 namespace App\Entity;
 
-use App\Repository\OwnerRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: OwnerRepository::class)]
-class Owner
+class Owner implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $firstname = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $lastname = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $mail = null;
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $password = null;
 
-    /**
-     * @var Collection<int, Animal>
-     */
-    #[ORM\OneToMany(targetEntity: Animal::class, mappedBy: 'id_owner', orphanRemoval: true)]
-    private Collection $animals;
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
+    private ?string $mail = null;
 
-    public function __construct()
-    {
-        $this->animals = new ArrayCollection();
-    }
+    // Add other fields and getters/setters as necessary
 
     public function getId(): ?int
     {
@@ -48,7 +37,7 @@ class Owner
         return $this->firstname;
     }
 
-    public function setFirstname(string $firstname): static
+    public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
 
@@ -60,9 +49,21 @@ class Owner
         return $this->lastname;
     }
 
-    public function setLastname(string $lastname): static
+    public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
 
         return $this;
     }
@@ -72,52 +73,31 @@ class Owner
         return $this->mail;
     }
 
-    public function setMail(string $mail): static
+    public function setMail(string $mail): self
     {
         $this->mail = $mail;
 
         return $this;
     }
 
-    public function getPassword(): ?string
+    // UserInterface methods
+    public function getUsername(): string
     {
-        return $this->password;
+        return $this->mail;
     }
 
-    public function setPassword(string $password): static
+    public function getUserIdentifier(): string
     {
-        $this->password = $password;
-
-        return $this;
+        return $this->mail;
     }
 
-    /**
-     * @return Collection<int, Animal>
-     */
-    public function getAnimals(): Collection
+    public function getRoles(): array
     {
-        return $this->animals;
+        return ['ROLE_OWNER'];
     }
 
-    public function addAnimal(Animal $animal): static
+    public function eraseCredentials(): void
     {
-        if (!$this->animals->contains($animal)) {
-            $this->animals->add($animal);
-            $animal->setIdOwner($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAnimal(Animal $animal): static
-    {
-        if ($this->animals->removeElement($animal)) {
-            // set the owning side to null (unless already changed)
-            if ($animal->getIdOwner() === $this) {
-                $animal->setIdOwner(null);
-            }
-        }
-
-        return $this;
+        // If you store any temporary, sensitive data on the user, clear it here
     }
 }

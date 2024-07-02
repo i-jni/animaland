@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Veterinarian index{% endblock %}
+
+{% block body %}
+    <h1>Veterinarian index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Lastname</th>
+                <th>Password</th>
+                <th>Mail</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for veterinarian in veterinarians %}
+            <tr>
+                <td>{{ veterinarian.id }}</td>
+                <td>{{ veterinarian.lastname }}</td>
+                <td>{{ veterinarian.password }}</td>
+                <td>{{ veterinarian.mail }}</td>
+                <td>
+                    <a href="{{ path('app_veterinarian_show', {'id': veterinarian.id}) }}">show</a>
+                    <a href="{{ path('app_veterinarian_edit', {'id': veterinarian.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_veterinarian_new') }}">Create new</a>
+{% endblock %}

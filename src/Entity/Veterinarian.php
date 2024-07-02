@@ -1,39 +1,29 @@
 <?php
-
 namespace App\Entity;
 
-use App\Repository\VeterinarianRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\VeterinarianRepository;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: VeterinarianRepository::class)]
-class Veterinarian
+class Veterinarian implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $lastname = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private ?string $mail = null;
 
-    /**
-     * @var Collection<int, Animal>
-     */
-    #[ORM\OneToMany(targetEntity: Animal::class, mappedBy: 'id_veterinarian', orphanRemoval: true)]
-    private Collection $animals;
-
-    public function __construct()
-    {
-        $this->animals = new ArrayCollection();
-    }
+    // Add other fields and getters/setters as necessary
 
     public function getId(): ?int
     {
@@ -45,19 +35,19 @@ class Veterinarian
         return $this->lastname;
     }
 
-    public function setLastname(string $lastname): static
+    public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
 
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -69,40 +59,31 @@ class Veterinarian
         return $this->mail;
     }
 
-    public function setMail(string $mail): static
+    public function setMail(string $mail): self
     {
         $this->mail = $mail;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Animal>
-     */
-    public function getAnimals(): Collection
+    // UserInterface methods
+    public function getUsername(): string
     {
-        return $this->animals;
+        return $this->mail;
     }
 
-    public function addAnimal(Animal $animal): static
+    public function getUserIdentifier(): string
     {
-        if (!$this->animals->contains($animal)) {
-            $this->animals->add($animal);
-            $animal->setIdVeterinarian($this);
-        }
-
-        return $this;
+        return $this->mail;
     }
 
-    public function removeAnimal(Animal $animal): static
+    public function getRoles(): array
     {
-        if ($this->animals->removeElement($animal)) {
-            // set the owning side to null (unless already changed)
-            if ($animal->getIdVeterinarian() === $this) {
-                $animal->setIdVeterinarian(null);
-            }
-        }
+        return ['ROLE_VETERINARIAN'];
+    }
 
-        return $this;
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
     }
 }
