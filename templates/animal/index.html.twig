@@ -3,6 +3,73 @@
 {% block title %}Animal index{% endblock %}
 
 {% block body %}
+    <style>
+        body {
+            background-color: #eaf7f7;
+            font-family: 'Arial', sans-serif;
+            color: #2b7a78;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #2b7a78;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .table th {
+            background-color: #3aafa9;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .table td {
+            color: #333;
+        }
+
+        .table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .action-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .action-links a {
+            margin: 0 10px;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: #f6b93b;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .action-links a:hover {
+            background-color: #e58e26;
+        }
+    </style>
+
     <h1>Animal index</h1>
 
     <table class="table">
@@ -35,11 +102,13 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="8">No records found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_animal_new') }}">Create new</a>
+    <div class="action-links">
+        <a href="{{ path('app_animal_new') }}">Create new</a>
+    </div>
 {% endblock %}

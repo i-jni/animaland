@@ -3,11 +3,107 @@
 {% block title %}Edit Animal{% endblock %}
 
 {% block body %}
+    <style>
+        body {
+            background-color: #eaf7f7;
+            font-family: 'Arial', sans-serif;
+            color: #2b7a78;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #2b7a78;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .form-container {
+            width: 60%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-container input, .form-container select, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .form-container button {
+            background-color: #f6b93b;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-container button:hover {
+            background-color: #e58e26;
+        }
+
+        .action-links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .action-links a {
+            margin: 0 10px;
+            padding: 10px 20px;
+            text-decoration: none;
+            background-color: #f6b93b;
+            color: white;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+        }
+
+        .action-links a:hover {
+            background-color: #e58e26;
+        }
+
+        .delete-form {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .delete-form form button {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .delete-form form button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+
     <h1>Edit Animal</h1>
 
-    {{ include('animal/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="form-container">
+        {{ include('animal/_form.html.twig', {'button_label': 'Update'}) }}
+    </div>
 
-    <a href="{{ path('app_animal_index') }}">back to list</a>
+    <div class="action-links">
+        <a href="{{ path('app_animal_index') }}">Back to list</a>
+    </div>
 
-    {{ include('animal/_delete_form.html.twig') }}
+    <div class="delete-form">
+        {{ include('animal/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

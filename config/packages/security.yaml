@@ -17,7 +17,7 @@ security:
                 class: App\Entity\Owner
                 property: mail
 
-    # Firewalls configuration
+    # Configuration des firewalls
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -25,7 +25,7 @@ security:
 
         main:
             lazy: true
-            provider: veterinarian_provider  # Default provider (can be omitted if not needed)
+            provider: veterinarian_provider
             form_login:
                 login_path: app_login
                 check_path: app_login
@@ -51,7 +51,9 @@ security:
             logout:
                 path: owner_logout
 
+
     # Access control configuration
     access_control:
-        - { path: ^/veterinarian, roles: ROLE_VETERINARIAN }
-        - { path: ^/owner, roles: ROLE_OWNER }
+        # - { path: ^/veterinarian, roles: ROLE_VETERINARIAN }
+        # - { path: ^/owner, roles: ROLE_OWNER }
+        # - { path: ^/animal, roles: ROLE_OWNER }

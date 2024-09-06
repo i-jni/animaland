@@ -3,6 +3,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\OwnerRepository;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: OwnerRepository::class)]
@@ -25,6 +26,9 @@ class Owner implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     private ?string $mail = null;
 
+    #[ORM\Column(type: 'json')]
+    private array $roles = ['owner']; // Le champ roles
+
     // Add other fields and getters/setters as necessary
 
     public function getId(): ?int
@@ -40,7 +44,6 @@ class Owner implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
-
         return $this;
     }
 
@@ -52,7 +55,6 @@ class Owner implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
-
         return $this;
     }
 
@@ -64,7 +66,6 @@ class Owner implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): self
     {
         $this->password = $password;
-
         return $this;
     }
 
@@ -76,28 +77,34 @@ class Owner implements UserInterface, PasswordAuthenticatedUserInterface
     public function setMail(string $mail): self
     {
         $this->mail = $mail;
-
         return $this;
-    }
-
-    // UserInterface methods
-    public function getUsername(): string
-    {
-        return $this->mail;
-    }
-
-    public function getUserIdentifier(): string
-    {
-        return $this->mail;
     }
 
     public function getRoles(): array
     {
-        return ['ROLE_OWNER'];
+        $roles = $this->roles;
+        // Ensure every user has at least one role
+        if (empty($roles)) {
+            $roles[] = 'ROLE_USER';
+        }
+
+        return array_map('strtoupper', $roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = array_map('strtoupper', $roles);
+
+        return $this;
     }
 
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->mail;
     }
 }

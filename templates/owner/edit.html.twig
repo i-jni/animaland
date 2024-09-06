@@ -3,11 +3,105 @@
 {% block title %}Edit Owner{% endblock %}
 
 {% block body %}
+    <style>
+        body {
+            background-color: #eaf7f7;
+            font-family: 'Helvetica', sans-serif;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            color: #2b7a78;
+            font-weight: 600;
+        }
+
+        form {
+            width: 50%;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            font-weight: bold;
+            color: #2b7a78;
+        }
+
+        form input, form select, form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        form input[type="submit"], form button {
+            background-color: #3aafa9;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        form input[type="submit"]:hover, form button:hover {
+            background-color: #276c6b;
+        }
+
+        .form-actions {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-to-list {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f6b93b;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .back-to-list:hover {
+            background-color: #e58e26;
+        }
+
+        .delete-form {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .delete-form form button {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .delete-form form button:hover {
+            background-color: #c0392b;
+        }
+    </style>
+
     <h1>Edit Owner</h1>
 
-    {{ include('owner/_form.html.twig', {'button_label': 'Update'}) }}
+    <div class="form-container">
+        {{ include('owner/_form.html.twig', {'button_label': 'Update'}) }}
+    </div>
 
-    <a href="{{ path('app_owner_index') }}">back to list</a>
+    <div class="form-actions">
+        <a class="back-to-list" href="{{ path('app_owner_index') }}">Back to list</a>
+    </div>
 
-    {{ include('owner/_delete_form.html.twig') }}
+    <div class="delete-form">
+        {{ include('owner/_delete_form.html.twig') }}
+    </div>
 {% endblock %}
